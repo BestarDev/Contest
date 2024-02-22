@@ -1,0 +1,9 @@
+main {
+    min-height: 80vh;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

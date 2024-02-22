@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { Outlet } from "react-router-dom"
+import Header from "./components/Header"
+import { Container } from "react-bootstrap"
+import Footer from "./components/Footer"
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
     <>
-      <h1>Welcome to the CONTEST</h1>
+      <Header />
+      <main className="py-3">
+        <Container>
+          <Outlet />
+        </Container>
+      </main>
+      <Footer />
     </>
   )
 }
