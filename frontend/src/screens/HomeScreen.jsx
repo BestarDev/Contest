@@ -1,4 +1,3 @@
-import React from 'react'
 import { Badge, Card, Carousel, Col, Image, ListGroup, Row, Table } from 'react-bootstrap'
 import problems from '../assets/static_data/problems'
 import contests from '../assets/static_data/contests'
@@ -9,10 +8,14 @@ import ContactForm from '../components/ContactForm'
 const HomeScreen = () => {
     problems.sort((a, b) => b.accept - a.accept).sort((a, b) => b.submit - a.submit)
     users.sort((a, b) => b.mark - a.mark)
+
+    const submitHandler =(e) => {
+        e.preventDefault();
+    }
     
     return (
         <Row className='p-3'>
-            <Col md={4} sm={6}>
+            <Col md={6} lg={4} className='mb-2'>
                 <Card>
                     <Card.Header><h3 className='m-0 text-center text-success'>Hot Problems</h3></Card.Header>
                     <Card.Body className='px-0'>
@@ -29,7 +32,7 @@ const HomeScreen = () => {
                     </Card.Body>
                 </Card>
             </Col>
-            <Col md={4} sm={6}>
+            <Col md={6} lg={4} className='mb-2'>
                 <Carousel className='mb-2'>
                     {contests.map(contest => (
                         <Carousel.Item key={contest._id}>
@@ -58,11 +61,11 @@ const HomeScreen = () => {
                             {users.map(user => (
                                 <tr key={user._id}>
                                     <td>{user.name}</td>
-                                    <td><Badge pill bg={user.submit > 100 ? 'success' :
-                                        user.submit > 50 ? 'warning' : 'danger'}>{user.submit}</Badge></td>
-                                    <td><Badge pill bg={user.accept > 80 ? 'success' : 
-                                        user.accept > 40 ? 'warning' : 'danger'}>{user.accept}</Badge></td>
-                                    <td>{Object.keys(user.contests).length}</td>
+                                    <td><Badge pill bg={(user?.submit && user.submit) > 100 ? 'success' :
+                                        (user?.submit && user.submit) > 50 ? 'warning' : 'danger'}>{user.submit}</Badge></td>
+                                    <td><Badge pill bg={(user?.accept && user.accept) > 80 ? 'success' : 
+                                        (user?.accept && user.accept) > 40 ? 'warning' : 'danger'}>{user.accept}</Badge></td>
+                                    <td>{user?.contests ? Object.keys(user.contests).length : 0 }</td>
                                 </tr>
                             ))}
                             </tbody>
@@ -72,7 +75,7 @@ const HomeScreen = () => {
             </Col>
             <Col>
                 <Row>
-                    <Col md={12} sm={6}>
+                    <Col lg={12} md={6}>
                         <Card>
                             <Card.Header><h3 className='m-0 text-center text-success'>Contests History</h3></Card.Header>
                             <Card.Body className='px-0'>
@@ -97,9 +100,9 @@ const HomeScreen = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col md={12} sm={6}>
+                    <Col lg={12} md={6}>
                         <SectionTitle><h2 className='text-success'>Contact US</h2></SectionTitle>
-                        <ContactForm />
+                        <ContactForm onSubmit={submitHandler}/>
                     </Col>
                 </Row>
             </Col>

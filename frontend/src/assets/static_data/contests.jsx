@@ -5,14 +5,8 @@ const contests = [
         status: "End",
         startDate: "2021-10-20 08:00 AM",
         endDate: "2021-10-20 08:00 PM",
-        participants: [
-            'Jack', 'Anna', 'Alison', 'Bestar'
-        ],
-        problems: {
-            pro1 : "Hello World",
-            pro2 : "Hanoi Tower",
-            pro3 : "Merge Sort"
-        },
+        participants: [],
+        problems: [],
         images: '/images/2021.jpg'
     },
     {
@@ -21,14 +15,8 @@ const contests = [
         status: "End",
         startDate: "2022-10-20 08:00 AM",
         endDate: "2022-10-20 08:00 PM",
-        participants: [
-            'Jack', 'Anna', 'Alison', 'Bestar'
-        ],
-        problems: {
-            pro1 : "Hello World",
-            pro2 : "Hanoi Tower",
-            pro3 : "Merge Sort"
-        },
+        participants: [],
+        problems:[],
         images: '/images/2022.jpg'
     },
     {
@@ -37,14 +25,8 @@ const contests = [
         status: "End",
         startDate: "2023-10-20 08:00 AM",
         endDate: "2023-10-20 08:00 PM",
-        participants: [
-            'Jack', 'Anna', 'Alison', 'Bestar'
-        ],
-        problems: {
-            pro1 : "Hello World",
-            pro2 : "Hanoi Tower",
-            pro3 : "Merge Sort"
-        },
+        participants: [],
+        problems: [],
         images: '/images/2023.jpg'
     }
 ]

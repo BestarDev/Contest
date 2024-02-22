@@ -1,4 +1,4 @@
-import { Image, Nav, NavDropdown, Navbar } from "react-bootstrap"
+import { Nav, NavDropdown, Navbar } from "react-bootstrap"
 import { LinkContainer } from "react-router-bootstrap"
 import { FaAward, FaCalendarWeek, FaEnvelope, FaQuestion, FaUserCheck, FaUsers } from 'react-icons/fa'
 import { useState } from "react"
@@ -11,7 +11,7 @@ const Header = () => {
             <Navbar expand='lg' variant='dark' sticky='top' collapseOnSelect 
                 className="bg-success px-5 py-2" onToggle={() => setCollapsed(!collapsed)}>
                 <LinkContainer to='/'>
-                    <Navbar.Brand className='d-flex gap-1 align-items-center'>
+                    <Navbar.Brand className='d-flex align-items-center'>
                         <img src='/logo.svg' alt='Contest' width={'50px'} height={'50px'} style={{color: 'white'}}/>
                         <span className="h2">ontest</span>
                     </Navbar.Brand>
