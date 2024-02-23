@@ -1,36 +1,46 @@
-import mongoose, { trusted } from "mongoose";
+import mongoose from "mongoose";
 
 const problemSchema = new mongoose.Schema({
     title: {
         type: String,
-        require: true
+        required: true
     },
     content: {
         type: String,
-        require: true
+        required: true
     },
     input: {
         type: String,
-        require: true
+        required: true
     },
     output: {
         type: String,
-        require: true
+        required: true
     },
     timeLimit: {
         type: Number,
-        require: true
+        required: true
     },
     memoryLimit: {
         type: Number,
-        require: true
+        required: true
+    },
+    difficulty: {
+        type: Number,
+        required: true,
+        default: 0
     },
     submit: {
         type: Number
     },
     accept: {
         type: Number
-    }
+    },
+    logs: [{
+        coder: {type: mongoose.Types.ObjectId, ref: 'User'},
+        time: {type: String},
+        res: {type: String}
+    }]
 }, {
     timestamps: true
 })

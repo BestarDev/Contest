@@ -2,8 +2,11 @@ import { Nav, NavDropdown, Navbar } from "react-bootstrap"
 import { LinkContainer } from "react-router-bootstrap"
 import { FaAward, FaCalendarWeek, FaEnvelope, FaQuestion, FaUserCheck, FaUsers } from 'react-icons/fa'
 import { useState } from "react"
+import LoginModal from "./LoginModal"
+import { createPortal } from "react-dom"
 
 const Header = () => {
+    const [show, setShow] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
     
     return (
@@ -19,18 +22,6 @@ const Header = () => {
                 <Navbar.Toggle aria-controls='header-bar' />
                 <Navbar.Collapse id='header-bar'>
                     <Nav className='ms-auto'>
-                        <LinkContainer to='/contact'>
-                            <Nav.Link>
-                                <FaEnvelope />
-                                Contact US
-                            </Nav.Link>
-                        </LinkContainer>
-                        <LinkContainer to='/rank'>
-                            <Nav.Link>
-                                <FaUsers />
-                                RankList
-                            </Nav.Link>
-                        </LinkContainer>
                         <NavDropdown title={
                             <>
                                 <FaQuestion />
@@ -50,22 +41,27 @@ const Header = () => {
                             <NavDropdown.Item>Upcoming</NavDropdown.Item>
                             <NavDropdown.Item>History</NavDropdown.Item>
                         </NavDropdown>
+                        <LinkContainer to='/rank'>
+                            <Nav.Link>
+                                <FaUsers />
+                                RankList
+                            </Nav.Link>
+                        </LinkContainer>
                         <LinkContainer to='/certify'>
                             <Nav.Link>
                                 <FaAward /> Certify
                             </Nav.Link>
                         </LinkContainer>
                         {!collapsed && <span className='text-white mt-2'>|</span>}
-                        <LinkContainer to='/login'>
-                            <Nav.Link>
-                                {!collapsed && <>Sign In</> }
-                                <FaUserCheck /> 
-                                {collapsed && <>Sign In</> }
-                            </Nav.Link>
-                        </LinkContainer>
+                        <Nav.Link onClick={() => setShow(!show)}>
+                            {!collapsed && <>Sign In</> }
+                            <FaUserCheck /> 
+                            {collapsed && <>Sign In</> }
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
+            {createPortal(<LoginModal show={show} onHide={() => setShow(false)}/>, document.body)}
         </header>
     )
 }

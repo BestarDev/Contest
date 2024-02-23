@@ -1,50 +1,61 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true
+        required: true
     },
     email: {
         type: String,
-        require: true
+        required: true
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
     photo: {
         type: String,
-        require: true,
+        required: true,
         default: '/images/userDefault.png'
+    },
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    mark: {
+        type: Number,
+        default: 0,
+        required: true
+    },
+    mark: {
+        type: Number,
+        default: 0,
+        required: true
     },
     submit: {
         type: Number,
-        require: true,
+        required: true,
         default: 0
     },
     accept: {
         type: Number, 
-        require: true,
+        required: true,
         default: 0
     },
     attempts: [{
-        problem: {type: Schema.Types.ObjectId, ref:'Problem'},
+        problem: {type: mongoose.Types.ObjectId, ref:'Problem'},
         result: {type: String},
         time: {type: String}
     }],
     contests: [{
-        contest: {type: Schema.Types.ObjectId, ref: 'Contest'},
+        contest: {type: mongoose.Types.ObjectId, ref: 'Contest'},
         points: {type: Number, default: 0}
     }],
-    mark: {
-        type: Number,
-        default: 0,
-        require: true
-    },
-    invite: {
-        type: String,
-    }
+    invite: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Contest'
+    }]
 }, {
     timestamps: true
 })

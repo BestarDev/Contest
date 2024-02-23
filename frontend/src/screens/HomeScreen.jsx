@@ -14,8 +14,8 @@ const HomeScreen = () => {
     }
     
     return (
-        <Row className='p-3'>
-            <Col md={6} lg={4} className='mb-2'>
+        <Row className='p-0'>
+            <Col lg={6} xl={4} className='mb-2'>
                 <Card>
                     <Card.Header><h3 className='m-0 text-center text-success'>Hot Problems</h3></Card.Header>
                     <Card.Body className='px-0'>
@@ -32,7 +32,7 @@ const HomeScreen = () => {
                     </Card.Body>
                 </Card>
             </Col>
-            <Col md={6} lg={4} className='mb-2'>
+            <Col lg={6} xl={4} className='mb-2'>
                 <Carousel className='mb-2'>
                     {contests.map(contest => (
                         <Carousel.Item key={contest._id}>
@@ -75,7 +75,7 @@ const HomeScreen = () => {
             </Col>
             <Col>
                 <Row>
-                    <Col lg={12} md={6}>
+                    <Col xl={12} lg={6}>
                         <Card>
                             <Card.Header><h3 className='m-0 text-center text-success'>Contests History</h3></Card.Header>
                             <Card.Body className='px-0'>
@@ -100,8 +100,10 @@ const HomeScreen = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col lg={12} md={6}>
-                        <SectionTitle><h2 className='text-success'>Contact US</h2></SectionTitle>
+                    <Col xl={12} lg={6}>
+                        <SectionTitle>
+                            <h2 className='text-success'>Contact Us</h2>
+                        </SectionTitle>
                         <ContactForm onSubmit={submitHandler}/>
                     </Col>
                 </Row>

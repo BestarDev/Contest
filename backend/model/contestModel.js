@@ -1,36 +1,36 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const contestSchema = new mongoose.Schema({
     creator: {
-        type: Schema.Types.ObjectId,
-        require: true,
+        type: mongoose.Types.ObjectId,
         ref: 'User'
     },
     title: {
         type: String,
-        require: true
-    },
-    startDate: {
-        type: String,
-        require: true
-    },
-    endDate: {
-        type: String,
-        require: true
+        required: true
     },
     status: {
         type: String,
-        require: true
+        required: true
+    },
+    startDate: {
+        type: String,
+        required: true
+    },
+    endDate: {
+        type: String,
+        required: true
     },
     participants: [{
-        user: {type: Schema.Types.ObjectId, ref: 'User'},
+        user: {type: mongoose.Types.ObjectId, ref: 'User'},
         totalpoints: {type: Number, default: 0}
     }],
     problems:[{
-        problem: {type: Schema.Types.ObjectId, ref: 'Problem'},
+        problem: {type: mongoose.Types.ObjectId, ref: 'Problem'},
         attempts: [{
-            user: {type: Schema.Types.ObjectId, ref: 'User'},
-            points: {type: Number, require: true, default: 0},
+            user: {type: mongoose.Types.ObjectId, ref: 'User'},
+            points: {type: Number, default: 0},
+            time: {type: String},
             description: {type: String}
         }]
     }],
