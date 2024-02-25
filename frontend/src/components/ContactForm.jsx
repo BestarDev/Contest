@@ -18,7 +18,8 @@ const ContactForm = ({onSubmit}) => {
                 />
                 <Form.Label htmlFor="comment">Your Comment</Form.Label>
             </Form.Floating>
-            <Button type='submit' variant="success" className="w-100 shadow">
+            <Button type='submit' variant="success" className="w-100"
+                style={{boxShadow: '0 3px 10px 0 green'}}>
                 <FaPaperPlane /><span className="ps-2 h5">Send</span>
             </Button>
         </Form>

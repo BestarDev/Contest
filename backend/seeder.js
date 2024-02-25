@@ -1,8 +1,10 @@
 import connectDB from './config/db.js'
+
 import User from './model/userModel.js'
-import users from './model/data/users.js'
 import Problem from './model/problemModel.js'
 import Contest from './model/contestModel.js'
+
+import users from './model/data/users.js'
 import contests from './model/data/contests.js'
 import problems from './model/data/problems.js'
 
@@ -13,6 +15,7 @@ const seedData = async() => {
         await User.deleteMany();
         await Problem.deleteMany();
         await Contest.deleteMany();
+
         const createdUsers = await User.insertMany(users);
         await Problem.insertMany(problems);
         const sampleContests = contests.map((contest) => contest?.creator ? contest : {...contest, creator: createdUsers[0]._id});
@@ -28,7 +31,6 @@ const seedData = async() => {
 
 const destroyData = async() => {
     try {
-        console.log("Destroying...")
         await User.deleteMany();
         await Problem.deleteMany();
         await Contest.deleteMany();

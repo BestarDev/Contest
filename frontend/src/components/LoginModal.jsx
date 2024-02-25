@@ -1,47 +1,80 @@
-import { useState } from "react"
-import { Button, Container, Form, Modal } from "react-bootstrap"
+import { useEffect, useState } from "react"
+import { Button, Container, Form, InputGroup, Modal } from "react-bootstrap"
 import { FaEnvelope, FaGithub } from "react-icons/fa"
 import { Link } from "react-router-dom"
 import SectionTitle from "./SectionTitle"
+import { useLoginMutation } from '../slices/usersApiSlice'
+import { setCredential } from "../slices/authSlice"
+import { useDispatch } from "react-redux"
+import Loader from "./Loader"
 
 
-const LoginModal = ({show, onHide}) => {
+const LoginModal = ({show, onHide, onSwitch}) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [err, setErr] = useState('')
 
-    const submitHandler = (e) => {
+    const dispatch = useDispatch();
+
+    const [login, {isLoading: loadingLogin}] = useLoginMutation();
+
+    const submitHandler = async(e) => {
         e.preventDefault();
-        console.log("Login...")
+        try {
+            const res = await login({email, password}).unwrap();
+            if(res) {
+                dispatch(setCredential({...res}));
+                onHide();
+                e.reset();
+            }
+        } catch (error) {
+            setErr(error?.data?.message || error.error)
+        }
     }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setErr('');
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, [err]);
 
     return (
         <Modal show={show} backdrop='static' keyboard={false} onHide={onHide} centered> 
-            <Modal.Header closeButton>
+            <Modal.Header closeButton className='py-2 ps-4'>
                 <Modal.Title>Sign In</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Container>
+                    {err && <p className="text-danger m-0" style={{fontWeight: "bold"}}>{err}</p>}
                     <Form onSubmit={submitHandler}>
-                        <Form.Group controlId="email" className="mb-2">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control type="text" value={email} 
+                        <InputGroup className="mb-3">
+                            <InputGroup.Text>Email</InputGroup.Text>
+                            <Form.Control type="email" value={email} placeholder="harry@email.com"
                                 onChange={(e) => setEmail(e.target.value)}/>
-                        </Form.Group>
-                        <Form.Group controlId="password" className="mb-2">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" value={password}
+                        </InputGroup>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Text>Password</InputGroup.Text>
+                            <Form.Control type="password" value={password} placeholder="******"
                                 onChange={(e) => setPassword(e.target.value)} />
-                        </Form.Group>
-                        <Button type="submit" className="w-100 p-2 my-2" variant="success">
-                            <span><FaEnvelope /></span>
-                            <span className="h5 ms-2 m-0"> Sign In With Email</span>
+                        </InputGroup>
+                        <Button type="submit" className="w-100 p-2" variant="success">
+                        {loadingLogin ? (
+                                <span><Loader size="25px"/></span>
+                            ) : (
+                            <>
+                                <span><FaEnvelope /></span>
+                                <span className="h5 ms-2 m-0"> Sign In With Email</span>
+                            </>
+                        )}
                         </Button> 
                         <SectionTitle center={true} colorfrom='transparent' colorto='green' margin='8px'/>
-                        <Button type='button' className="w-100 p-2 my-2" variant="secondary">
+                        <Button type='button' className="w-100 p-2" variant="secondary">
                             <span><FaGithub /></span>
                             <span className="h5 ms-2 m-0"> Sign In With Github</span>
                         </Button>
-                        <p className="my-1 text-center">If you are a new coder, go <Link to="/" className="text-success">Register</Link></p>
+                        <p className="mt-2 mb-0 text-center">If you are new here, go to <Link className="text-success" onClick={onSwitch}>Register</Link></p>
                     </Form>
                 </Container>
             </Modal.Body>

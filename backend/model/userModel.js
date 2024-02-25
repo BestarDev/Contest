@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from 'bcryptjs'
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -7,7 +8,8 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -16,17 +18,12 @@ const userSchema = new mongoose.Schema({
     photo: {
         type: String,
         required: true,
-        default: '/images/userDefault.png'
+        default: '/images/userDefault.jpg'
     },
     isAdmin: {
         type: Boolean,
         required: true,
         default: false
-    },
-    mark: {
-        type: Number,
-        default: 0,
-        required: true
     },
     mark: {
         type: Number,
@@ -59,6 +56,28 @@ const userSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
+
+userSchema.methods.matchPassword = async function(enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+}
+
+/******************* Important ***************************/
+/* userSchema.pre('save', async function(next)            |
+     |-> userSchema.pre('validate', async function(next)  |
+/*********************************************************/
+userSchema.pre('validate', async function(next) {
+    if (!this.isModified('password')) {
+        return next();  // Return here to exit the function early if password is not modified
+    }
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        return next();  // Return after hashing the password
+    } catch (error) {
+        return next(error);  // Pass any error to the next middleware
+    }
+});
 
 const User = mongoose.model("User", userSchema)
 

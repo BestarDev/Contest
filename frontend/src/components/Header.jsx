@@ -1,13 +1,34 @@
-import { Nav, NavDropdown, Navbar } from "react-bootstrap"
+import { Image, Nav, NavDropdown, Navbar } from "react-bootstrap"
 import { LinkContainer } from "react-router-bootstrap"
-import { FaAward, FaCalendarWeek, FaEnvelope, FaQuestion, FaUserCheck, FaUsers } from 'react-icons/fa'
+import { FaAward, FaCalendarWeek, FaQuestion, FaSignOutAlt, FaUserCheck, FaUsers } from 'react-icons/fa'
 import { useState } from "react"
 import LoginModal from "./LoginModal"
 import { createPortal } from "react-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { useLogoutMutation } from "../slices/usersApiSlice"
+import { logout } from "../slices/authSlice"
+import RegisterModal from "./RegisterModal"
 
 const Header = () => {
-    const [show, setShow] = useState(false)
+    const { userInfo } = useSelector(state => state.auth);
+
+    const [showLogin, setShowLogin] = useState(false)
+    const [showRegister, setShowRegister] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
+
+    const dispatch = useDispatch();
+
+    const [logoutApi] = useLogoutMutation();
+
+    const logoutHandler = async() => {
+        await logoutApi();
+        dispatch(logout());
+    }
+
+    const switchHandler = () => {
+        setShowLogin(!showLogin);
+        setShowRegister(!showRegister);
+    }
     
     return (
         <header>
@@ -28,8 +49,12 @@ const Header = () => {
                                 Problems
                             </>
                         }>
-                            <NavDropdown.Item>Show Problems</NavDropdown.Item>
-                            <NavDropdown.Item>Consult</NavDropdown.Item>
+                            <LinkContainer to='/problems/show'>
+                                <NavDropdown.Item>Show Problems</NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to='/problems/consult'>
+                                <NavDropdown.Item>Consult</NavDropdown.Item>
+                            </LinkContainer>
                         </NavDropdown>
                         <NavDropdown title={
                             <>
@@ -37,9 +62,12 @@ const Header = () => {
                                 <span>Contest</span>
                             </>
                         }>
-                            <NavDropdown.Item>Create A New</NavDropdown.Item>
-                            <NavDropdown.Item>Upcoming</NavDropdown.Item>
-                            <NavDropdown.Item>History</NavDropdown.Item>
+                            <LinkContainer to='/contest/new'>
+                                <NavDropdown.Item>Create A New</NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to='/contest/log'>
+                                <NavDropdown.Item>Show Log</NavDropdown.Item>
+                            </LinkContainer>
                         </NavDropdown>
                         <LinkContainer to='/rank'>
                             <Nav.Link>
@@ -52,16 +80,35 @@ const Header = () => {
                                 <FaAward /> Certify
                             </Nav.Link>
                         </LinkContainer>
-                        {!collapsed && <span className='text-white mt-2'>|</span>}
-                        <Nav.Link onClick={() => setShow(!show)}>
-                            {!collapsed && <>Sign In</> }
-                            <FaUserCheck /> 
-                            {collapsed && <>Sign In</> }
-                        </Nav.Link>
+                        {userInfo ? (
+                            <>
+                                <Image src={userInfo.photo} alt="#" roundedCircle 
+                                    width={'30px'} height={'30px'} className="ms-2 my-auto hide-lg"/>
+                                <NavDropdown title={(<><FaUserCheck className="show-lg" /> {userInfo.name}</>)} align='end'>
+                                    <LinkContainer to='/profile'>
+                                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <LinkContainer to='/invite'>
+                                        <NavDropdown.Item>Message</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <NavDropdown.Divider className="my-1"/>
+                                    <NavDropdown.Item onClick={logoutHandler}><FaSignOutAlt /> Log Out</NavDropdown.Item>
+                                </NavDropdown>
+                            </>
+                        ) : (
+                            <>
+                                <span className='text-white mt-2 hide-lg'>|</span>
+                                <Nav.Link onClick={() => setShowLogin(!showLogin)}>
+                                    <FaUserCheck /> 
+                                    Sign In
+                                </Nav.Link>
+                            </>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
-            {createPortal(<LoginModal show={show} onHide={() => setShow(false)}/>, document.body)}
+            {createPortal(<LoginModal show={showLogin} onHide={() => setShowLogin(false)} onSwitch={switchHandler}/>, document.body)}
+            {createPortal(<RegisterModal show={showRegister} onHide={() => setShowRegister(false)} onSwitch={switchHandler}/>, document.body)}
         </header>
     )
 }

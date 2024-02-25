@@ -3,7 +3,6 @@ const users = [
         name: "Bestar",
         email: "bestar@email.com",
         password: '123456',
-        photo: "/images/user3.png",
         mark: 450,
         isAdmin: true
     },
@@ -11,14 +10,12 @@ const users = [
         name: "John",
         email: "john@email.com",
         password: '123456',
-        photo: "/images/user1.png",
         mark: 200
     },
     {
         name: "Anna",
         email: "anna@email.com",
         password: '123456',
-        photo: "/images/user2.png",
         mark: 300
     },
     {
