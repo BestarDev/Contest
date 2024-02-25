@@ -5,10 +5,7 @@ const Footer = () => {
         <Container className="my-2">
             <Row>
                 <Col>
-                    <h5 className="text-center">Copyright &copy; {new Date().getFullYear()}</h5>
-                </Col>
-                <Col sm={"auto"}>
-                    <h5 className="text-center">(BestarDev)</h5>
+                    <p className="text-center">Copyright &copy; {new Date().getFullYear()}</p>
                 </Col>
             </Row>
         </Container>

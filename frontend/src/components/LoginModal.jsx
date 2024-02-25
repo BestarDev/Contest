@@ -25,7 +25,7 @@ const LoginModal = ({show, onHide, onSwitch}) => {
             if(res) {
                 dispatch(setCredential({...res}));
                 onHide();
-                e.reset();
+                setEmail(''); setPassword('');
             }
         } catch (error) {
             setErr(error?.data?.message || error.error)
